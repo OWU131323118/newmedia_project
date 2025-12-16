@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="js/audio.js"></script> </head>
+  <body>
+    <a-scene>
+      <a-box id="mic-box" position="0 1.6 -3" color="gray" mic-listener></a-box>
+      
+      <script>
+        const box = document.getElementById('mic-box');
+        // A-Frameのレンダリングループに合わせて監視
+        AFRAME.registerComponent('debug-visual', {
+          tick: function() {
+             // audio.jsが書き込んだ値を読み取る
+             const vol = parseFloat(box.getAttribute('dataset-volume') || 0);
+             const s = 1 + vol * 3;
+             box.object3D.scale.set(s, s, s); // 音量で拡大縮小
+          }
+        });
+        box.setAttribute('debug-visual', '');
+      </script>
+    </a-scene>
+  </body>
+</html>
